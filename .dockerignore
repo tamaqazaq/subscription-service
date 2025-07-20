@@ -1,0 +1,18 @@
+*.log
+*.test
+*.out
+*.exe
+# *.mod
+# *.sum
+
+.git
+.gitignore
+
+.vscode/
+.idea/
+
+.DS_Store
+
+docs/
+
+.env

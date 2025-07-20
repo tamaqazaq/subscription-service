@@ -1,0 +1,228 @@
+basePath: /
+definitions:
+  domain.Subscription:
+    properties:
+      end_date:
+        type: string
+      id:
+        format: uuid
+        type: string
+      price:
+        type: integer
+      service_name:
+        type: string
+      start_date:
+        type: string
+      user_id:
+        format: uuid
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: REST API for managing subscriptions
+  title: Subscription Service API
+  version: "1.0"
+paths:
+  /subscriptions:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Subscription'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all subscriptions
+      tags:
+      - Subscriptions
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Subscription data
+        in: body
+        name: subscription
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Subscription'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create subscription
+      tags:
+      - Subscriptions
+  /subscriptions/{id}:
+    delete:
+      parameters:
+      - description: Subscription ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete subscription
+      tags:
+      - Subscriptions
+    get:
+      parameters:
+      - description: Subscription ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Subscription'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get subscription by ID
+      tags:
+      - Subscriptions
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Subscription ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated data
+        in: body
+        name: subscription
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Subscription'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update subscription
+      tags:
+      - Subscriptions
+  /subscriptions/total:
+    get:
+      description: 'Calculates the sum of all subscriptions in a given period. Optional
+        filters: user_id, service_name.'
+      parameters:
+      - description: User ID (optional UUID)
+        in: query
+        name: user_id
+        type: string
+      - description: Service name (optional)
+        in: query
+        name: service_name
+        type: string
+      - description: Start date in format MM-YYYY (e.g. 07-2025)
+        in: query
+        name: start
+        required: true
+        type: string
+      - description: End date in format MM-YYYY (e.g. 12-2025)
+        in: query
+        name: end
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'e.g. {\"total\": 1200}'
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: 'e.g. {\"error\": \"Invalid start format (MM-YYYY)\"}'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 'e.g. {\"error\": \"Failed to calculate total\"}'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get total subscription cost
+      tags:
+      - Subscriptions
+swagger: "2.0"
