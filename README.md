@@ -22,20 +22,30 @@ REST-сервис на Go для управления онлайн-подпис�
 ```
 
 subscription-service/
-├── cmd/                    # main.go
-├── config/                 # конфигурация из .env
+├── cmd/                        # main.go (входная точка)
+├── config/                     # конфигурация из .env
 ├── internal/
-│   ├── adapters/http/      # HTTP handlers (Gin)
-│   ├── domain/             # Модели и интерфейсы (entities)
+│   ├── adapters/http/          # HTTP handlers (Gin)
+│   ├── domain/
+│   │   ├── application/        # интерфейсы для usecase
+│   │   ├── repository/         # интерфейсы для работы с БД
+│   │   ├── subscription.go     # модель Subscription (entity)
+│   │   └── dateonly.go         # вспомогательные типы
 │   ├── infrastructure/
-│   │   └── postgres/       # Работа с PostgreSQL
-│   └── usecase/            # Бизнес-логика
-├── db/migrations/          # SQL миграции
-├── docs/                   # Swagger-документация
-├── Dockerfile
-├── docker-compose.yml
-├── .env.example
-└── README.md               # этот файл
+│   │   └── postgres/           # реализация repository через PostgreSQL
+│   └── usecase/                # бизнес-логика (usecases)
+├── db/migrations/              # SQL миграции (up/down)
+├── docs/                       # Swagger-документация
+│   ├── docs.go
+│   ├── swagger.json
+│   └── swagger.yaml
+├── Dockerfile                  # Docker-образ приложения
+├── docker-compose.yml          # docker + postgres + migrate
+├── .dockerignore               # игнорируемые файлы в docker
+├── .env.example                # пример env-файла (без чувствит. данных)
+├── go.mod / go.sum             # зависимости Go
+└── README.md                   # документация проекта
+
 
 ````
 
